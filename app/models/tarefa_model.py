@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from app.database import Base 
+from database import Base 
 
 class ItemGerenciavel:
     def exibir_detalhes(self):
@@ -19,6 +19,17 @@ class Tarefa(Base, ItemGerenciavel):
 
     def exibir_detalhes(self):
         return f"Tarefa Comum: {self.titulo} ({self.status})"
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "descricao": self.descricao,
+            "prioridade": self.prioridade,
+            "status": self.status,
+            "prazo": self.prazo,
+            "detalhes": self.exibir_detalhes() 
+        }
 
 
 class TarefaPrioritaria(Tarefa):
