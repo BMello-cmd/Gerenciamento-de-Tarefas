@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from database import Base 
+from app.database import Base 
 
 class ItemGerenciavel:
     def exibir_detalhes(self):
@@ -22,12 +22,6 @@ class Tarefa(Base, ItemGerenciavel):
     
     def to_dict(self):
         return {
-            "id": self.id,
-            "titulo": self.titulo,
-            "descricao": self.descricao,
-            "prioridade": self.prioridade,
-            "status": self.status,
-            "prazo": self.prazo,
             "detalhes": self.exibir_detalhes() 
         }
 

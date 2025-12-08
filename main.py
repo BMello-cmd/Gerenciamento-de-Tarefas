@@ -3,8 +3,8 @@ from app.database import engine, Base
 from app.controllers.tarefa_controller import router
 import app.models.tarefa_model
 
-Base.metadata.create_all(bind=engine) #Cria Banco
+Base.metadata.create_all(bind=engine)
 
-app = FastAPI() #Inicia o Sistema 
+app = FastAPI() 
 
-app.include_router(router) #Inicia as rotas
+app.include_router(router)
