@@ -9,20 +9,14 @@ def criar_tarefa(db: Session, titulo: str, descricao: str, prioridade: str, praz
     
     query = db.query(Tarefa).filter(Tarefa.titulo == titulo)
 
-    if prazo:
-        query = query.filter(Tarefa.prazo == prazo)
-    else:
-        query = query.filter(Tarefa.prazo.is_(None))
-        
-    tarefa_encontrada = query.first()
+    tarefa_encontrada = db.query(Tarefa).filter(Tarefa.titulo == titulo).first()
 
     if tarefa_encontrada:
         raise ValueError("Já existe uma tarefa com o mesmo Título e Prazo.")
     
     prioridade_alta = prioridade.lower() == "alta"
-    deve_ser_prioritaria = prioridade_alta or prazo is not None
     
-    if deve_ser_prioritaria:
+    if prioridade_alta:
         nova_tarefa = TarefaPrioritaria(
             titulo=titulo, 
             descricao=descricao, 
