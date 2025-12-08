@@ -22,7 +22,13 @@ class Tarefa(Base, ItemGerenciavel):
     
     def to_dict(self):
         return {
-            "detalhes": self.exibir_detalhes() 
+            "id": self.id,
+            "titulo": self.titulo,
+            "descricao": self.descricao,
+            "prioridade": self.prioridade,
+            "status": self.status,
+            "prazo": self.prazo,
+            "tipo": self.tipo,
         }
 
 

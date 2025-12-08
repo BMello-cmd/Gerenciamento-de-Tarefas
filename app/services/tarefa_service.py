@@ -19,12 +19,26 @@ def criar_tarefa(db: Session, titulo: str, descricao: str, prioridade: str, praz
     if tarefa_encontrada:
         raise ValueError("Já existe uma tarefa com o mesmo Título e Prazo.")
     
-    if prazo:
-        nova_tarefa = TarefaPrioritaria(titulo=titulo, descricao=descricao, prioridade=prioridade, prazo=prazo)
-        nova_tarefa.tipo = "prioritaria"
+    prioridade_alta = prioridade.lower() == "alta"
+    deve_ser_prioritaria = prioridade_alta or prazo is not None
+    
+    if deve_ser_prioritaria:
+        nova_tarefa = TarefaPrioritaria(
+            titulo=titulo, 
+            descricao=descricao, 
+            prioridade=prioridade, 
+            prazo=prazo 
+        )
+        nova_tarefa.tipo = "prioritaria" 
+        
     else:
-        nova_tarefa = Tarefa(titulo=titulo, descricao=descricao, prioridade=prioridade, tipo="comum")
-
+        nova_tarefa = Tarefa(
+            titulo=titulo, 
+            descricao=descricao, 
+            prioridade=prioridade, 
+            tipo="comum"
+        )
+        
     db.add(nova_tarefa)
     db.commit()
     db.refresh(nova_tarefa)
@@ -47,7 +61,8 @@ def buscar_por_id(db: Session, tarefa_id: int):
     if not tarefa:
         raise ValueError("Tarefa não encontrada.")
     
-    return tarefa.to_dict()
+    tarefa_dict = tarefa.to_dict() 
+    return {"detalhes": tarefa_dict['detalhes']}
 
 def deletar_tarefa(db: Session, tarefa_id: int):
     tarefa = db.query(Tarefa).filter(Tarefa.id == tarefa_id).first()
